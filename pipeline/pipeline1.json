@@ -27,7 +27,8 @@
 						"PipelineName": "Test Pipeline",
 						"Subject": "Test"
 					},
-					"timeout": "01:10:00"
+					"timeout": "01:10:00",
+					"reportStatusOnCallBack": true
 				}
 			},
 			{
