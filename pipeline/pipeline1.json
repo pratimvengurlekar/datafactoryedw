@@ -72,7 +72,11 @@
 					"headers": {
 						"Content-Type": "application/json"
 					},
-					"body": "{\n \"statement\": \"success\",\n \"repo\": \"dbt_source_integration\",\n \"project\": \"dbt_source_integration\"\n}}",
+					"body": {
+						"statement": "success",
+						"repo": "dbt_source_integration",
+						"project": "dbt_source_integration"
+					},
 					"timeout": "01:10:00",
 					"reportStatusOnCallBack": true
 				}
