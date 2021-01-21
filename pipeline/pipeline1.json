@@ -7,7 +7,7 @@
 				"type": "WebHook",
 				"dependsOn": [
 					{
-						"activity": "Wait2",
+						"activity": "Wait2_copy1",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -135,7 +135,7 @@
 				"type": "WebHook",
 				"dependsOn": [
 					{
-						"activity": "Wait2",
+						"activity": "Wait2_copy1_copy1",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -274,6 +274,38 @@
 					},
 					"timeout": "01:10:00",
 					"reportStatusOnCallBack": true
+				}
+			},
+			{
+				"name": "Wait2_copy1",
+				"type": "Wait",
+				"dependsOn": [
+					{
+						"activity": "Wait2",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"waitTimeInSeconds": 15
+				}
+			},
+			{
+				"name": "Wait2_copy1_copy1",
+				"type": "Wait",
+				"dependsOn": [
+					{
+						"activity": "Wait2",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"waitTimeInSeconds": 25
 				}
 			}
 		],
