@@ -1,0 +1,301 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "edwdatafactoryforreview"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "WebHook1_Success",
+						"type": "WebHook",
+						"dependsOn": [
+							{
+								"activity": "Wait2",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"url": "https://prod-154.westeurope.logic.azure.com:443/workflows/1027166c8808436caefc16102861a055/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=Asmv9cDf5kPD1oSJFDkopJzn_3OdXogSpKXs-hHsy3I",
+							"method": "POST",
+							"headers": {
+								"Content-Type": "application/json"
+							},
+							"body": {
+								"statement": "success",
+								"repo": "dbt_source_integration",
+								"project": "dbt_source_integration"
+							},
+							"timeout": "01:10:00",
+							"reportStatusOnCallBack": true
+						}
+					},
+					{
+						"name": "Wait1",
+						"type": "Wait",
+						"dependsOn": [
+							{
+								"activity": "WebHook1_Success",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"waitTimeInSeconds": 10
+						}
+					},
+					{
+						"name": "Wait2",
+						"type": "Wait",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"waitTimeInSeconds": 10
+						}
+					},
+					{
+						"name": "WebHook2_success",
+						"type": "WebHook",
+						"dependsOn": [
+							{
+								"activity": "Wait2",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"url": "https://prod-154.westeurope.logic.azure.com:443/workflows/1027166c8808436caefc16102861a055/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=Asmv9cDf5kPD1oSJFDkopJzn_3OdXogSpKXs-hHsy3I",
+							"method": "POST",
+							"headers": {
+								"Content-Type": "application/json"
+							},
+							"body": {
+								"statement": "success",
+								"repo": "dbt_source_integration",
+								"project": "dbt_source_integration"
+							},
+							"timeout": "01:10:00",
+							"reportStatusOnCallBack": true
+						}
+					},
+					{
+						"name": "Wait1_copy2",
+						"type": "Wait",
+						"dependsOn": [
+							{
+								"activity": "WebHook2_success",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"waitTimeInSeconds": 10
+						}
+					},
+					{
+						"name": "WebHook3_success",
+						"type": "WebHook",
+						"dependsOn": [
+							{
+								"activity": "Wait1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "Wait1_copy2",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"url": "https://prod-154.westeurope.logic.azure.com:443/workflows/1027166c8808436caefc16102861a055/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=Asmv9cDf5kPD1oSJFDkopJzn_3OdXogSpKXs-hHsy3I",
+							"method": "POST",
+							"headers": {
+								"Content-Type": "application/json"
+							},
+							"body": {
+								"statement": "success",
+								"repo": "dbt_source_integration",
+								"project": "dbt_source_integration"
+							},
+							"timeout": "01:10:00",
+							"reportStatusOnCallBack": true
+						}
+					},
+					{
+						"name": "WebHook1_Fail_Success",
+						"type": "WebHook",
+						"dependsOn": [
+							{
+								"activity": "Wait2",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"url": "https://prod-154.westeurope.logic.azure.com:443/workflows/1027166c8808436caefc16102861a055/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=Asmv9cDf5kPD1oSJFDkopJzn_3OdXogSpKXs-hHsy3I",
+							"method": "POST",
+							"headers": {
+								"Content-Type": "application/json"
+							},
+							"body": {
+								"statement": "success",
+								"repo": "dbt_source_integration",
+								"project": "dbt_source_integration"
+							},
+							"timeout": "01:10:00",
+							"reportStatusOnCallBack": true
+						}
+					},
+					{
+						"name": "Wait1_copy3",
+						"type": "Wait",
+						"dependsOn": [
+							{
+								"activity": "WebHook1_Fail_Success",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"waitTimeInSeconds": 10
+						}
+					},
+					{
+						"name": "WebHook2_Fail_Fail",
+						"type": "WebHook",
+						"dependsOn": [
+							{
+								"activity": "Wait1_copy3",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"url": "https://prod-154.westeurope.logic.azure.com:443/workflows/1027166c8808436caefc16102861a055/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=Asmv9cDf5kPD1oSJFDkopJzn_3OdXogSpKXs-hHsy3I",
+							"method": "POST",
+							"headers": {
+								"Content-Type": "application/json"
+							},
+							"body": {
+								"statement": "fail",
+								"repo": "dbt_source_integration",
+								"project": "dbt_source_integration"
+							},
+							"timeout": "01:10:00",
+							"reportStatusOnCallBack": true
+						}
+					},
+					{
+						"name": "WebHook2_Fail_success",
+						"type": "WebHook",
+						"dependsOn": [
+							{
+								"activity": "Wait1_copy3",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"url": "https://prod-154.westeurope.logic.azure.com:443/workflows/1027166c8808436caefc16102861a055/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=Asmv9cDf5kPD1oSJFDkopJzn_3OdXogSpKXs-hHsy3I",
+							"method": "POST",
+							"headers": {
+								"Content-Type": "application/json"
+							},
+							"body": {
+								"statement": "success",
+								"repo": "dbt_source_integration",
+								"project": "dbt_source_integration"
+							},
+							"timeout": "01:10:00",
+							"reportStatusOnCallBack": true
+						}
+					},
+					{
+						"name": "Wait1_copy3_copy1",
+						"type": "Wait",
+						"dependsOn": [
+							{
+								"activity": "WebHook2_Fail_Fail",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "WebHook2_Fail_success",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"waitTimeInSeconds": 10
+						}
+					},
+					{
+						"name": "WebHook2_NoRun",
+						"type": "WebHook",
+						"dependsOn": [
+							{
+								"activity": "Wait1_copy3_copy1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"url": "https://prod-154.westeurope.logic.azure.com:443/workflows/1027166c8808436caefc16102861a055/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=Asmv9cDf5kPD1oSJFDkopJzn_3OdXogSpKXs-hHsy3I",
+							"method": "POST",
+							"headers": {
+								"Content-Type": "application/json"
+							},
+							"body": {
+								"statement": "fail",
+								"repo": "dbt_source_integration",
+								"project": "dbt_source_integration"
+							},
+							"timeout": "01:10:00",
+							"reportStatusOnCallBack": true
+						}
+					}
+				],
+				"annotations": []
+			},
+			"dependsOn": []
+		}
+	]
+}
